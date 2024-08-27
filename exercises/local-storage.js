@@ -38,3 +38,53 @@
  */
 
 // Your code goes here...
+
+const container = document.querySelector(".cardsContainer");
+
+function setFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites.forEach(id => {
+        const item = document.getElementById(id);
+        if (item) {
+            item.style.backgroundColor = 'red';
+            item.dataset.fav = 'true';
+        }
+    });
+}
+
+function addToFavorites(id) {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (!favorites.includes(id)) {
+        favorites.push(id);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+}
+
+
+function removeFromFavorites(id) {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites = favorites.filter(favId => favId !== id);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+function handleCardClick(event) {
+    const card = event.target.closest('.card');
+    if (!card) return; 
+
+    const id = card.id;
+    const isFavorite = card.dataset.fav === 'true';
+
+    if (isFavorite) {
+        card.style.backgroundColor = 'white';
+        card.dataset.fav = 'false';
+        removeFromFavorites(id);
+    } else {
+        card.style.backgroundColor = 'red';
+        card.dataset.fav = 'true';
+        addToFavorites(id);
+    }
+}
+
+container.addEventListener('click', handleCardClick);
+
+
+setFavorites();

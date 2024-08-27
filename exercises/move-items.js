@@ -2,7 +2,7 @@
  * SORTING NODES WITHIN A CONTAINER
  * Please, make sure to read the following files in the exercises-info folder before you start
  * * 01 SelectNodes.md
-*/
+ */
 
 /**
  * @task
@@ -13,7 +13,7 @@
 
 // Your code goes here...
 
-
+const allItems = document.querySelectorAll(".item");
 
 /**
  * @task
@@ -23,8 +23,7 @@
  * */
 
 // Your code goes here
-
-
+const main = document.getElementById("#main");
 
 /**
  * @task
@@ -34,8 +33,7 @@
  */
 
 // Your code goes here
-
-
+const favs = document.getElementById("#favs");
 
 /**
  * @task
@@ -48,6 +46,33 @@
 
 // Your code goes here
 
+function updateCollections(id, direction) {
+  const item = document.getElementById(id.toString());
+ 
+  let newParent, newIcon;
+
+  if (direction === 'toFavs') {
+    newParent = document.getElementById('favs');
+    // newParent = favs;
+    newIcon = 'fa-heart-crack';
+  } else if (direction === 'toMain') {
+    newParent = document.getElementById('main');
+    // newParent = main;
+    newIcon = 'fa-heart-circle-plus';
+  } else {
+    console.error('Invalid direction:', direction);
+    return;
+  }
+
+  if (item && newParent) {
+    newParent.appendChild(item);
+    
+    const icon = item.querySelector('.fa-solid');
+    if (icon) {
+      icon.className = `fa-solid ${newIcon}`;
+    }
+  } 
+}
 
 
 /**
@@ -65,5 +90,21 @@
  */
 
 // Your code goes here...
+// Iterate through each item in the allItems NodeList and add the click event listener
+allItems.forEach(item => {
+  item.addEventListener('click', function() {
+    const parentId = item.parentElement.id;
 
+    const itemId = parseInt(item.id, 10);
+
+    let direction;
+    if (parentId === 'main') {
+      direction = 'toFavs';
+    } else if (parentId === 'favs') {
+      direction = 'toMain';
+    }
+    
+    updateCollections(itemId, direction);
+  });
+});
 
